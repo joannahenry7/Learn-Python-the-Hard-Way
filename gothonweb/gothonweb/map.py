@@ -1,15 +1,36 @@
+from random import randint
+
+
 class Room(object):
 
-    def __init__(self, name, description):
+    def __init__(self, name, description, tries=1):
         self.name = name
         self.description = description
         self.paths = {}
+        self.tries = tries
 
     def go(self, direction):
-        return self.paths.get(direction, None)
+        if direction in self.paths:
+            return self.paths.get(direction, None)
+        elif self.tries == 1:
+            return self.paths.get('*', None)
+        else:
+            self.tries -= 1
+            return self
 
     def add_paths(self, paths):
         self.paths.update(paths)
+
+
+# incorporate random numbers to make the game more fun
+class MoreFun(object):
+
+    def __init__(self):
+        self.code = '%d%d%d' % (randint(1,9), randint(1,9), randint(1,9))
+        self.pod = str(randint(1,5))
+
+
+stuff = MoreFun()
 
 
 central_corridor = Room("Central Corridor",
@@ -17,7 +38,7 @@ central_corridor = Room("Central Corridor",
 The Gothons of Planet Percal #25 have invaded your ship and destroyed
 your entire crew. You are the last surviving member and your last
 mission is to get the neutron destruct bomb from the Weapons Armory,
-put it in the bridge, ad blow the ship up after getting into an
+put it in the bridge, and blow the ship up after getting into an
 escape pod.
 
 You're running down the central corridor to the Weapons Armory when
@@ -84,13 +105,13 @@ do you take?
 
 the_end_winner = Room("The End",
 """
-You jump into pod 2 and hit the eject button.
+You jump into pod %s and hit the eject button.
 The pod easily slides out into space heading to
 the planet below. As it flies to the planet, you look
 back and see your ship implode then explode like a
 bright star, taking out the Gothon ship at the same
 time. You won!
-""")
+""" % stuff.pod)
 
 
 the_end_loser = Room("The End",
@@ -100,12 +121,6 @@ The pod escapes out into the void of space, then
 implodes as the hull ruptures, crushing your body
 into  jam jelly.
 """)
-
-
-escape_pod.add_paths({
-    '2': the_end_winner,
-    '*': the_end_loser
-})
 
 
 generic_death = Room("death", "You died.")
@@ -142,6 +157,13 @@ ship from their ship and you die.
 """)
 
 
+wrong_code_retries = Room("Laser Weapon Armory",
+"""
+BZZZZEDDD!
+You have guessed incorrectly!
+""", 9)
+
+
 throw_bomb_death = Room("Death",
 """
 In a panic you throw the bomb at the group of Gothons
@@ -153,6 +175,12 @@ it goes off.
 """)
 
 
+escape_pod.add_paths({
+    stuff.pod: the_end_winner,
+    '*': the_end_loser
+})
+
+
 the_bridge.add_paths({
     'throw the bomb': throw_bomb_death,
     'slowly place the bomb': escape_pod
@@ -160,7 +188,13 @@ the_bridge.add_paths({
 
 
 laser_weapon_armory.add_paths({
-    '132': the_bridge,
+    stuff.code: the_bridge,
+    '*': wrong_code_retries
+})
+
+
+wrong_code_retries.add_paths({
+    stuff.code: the_bridge,
     '*': wrong_code_death
 })
 

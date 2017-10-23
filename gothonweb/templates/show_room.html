@@ -1,16 +1,29 @@
 $def with (room)
+$var title: "Gothons From Planet Percal #25"
+$var cssfiles: static/main.css
+
 
 <h1> $room.name </h1>
 
+
 <pre>
-  $room.description
+  <div class="text">
+    $room.description
+  </div>
 </pre>
 
-$if room.name == "Death":
-    <p><a href="/">Play Again?</a></p>
+$if room.name == "Death" or room.name == "The End":
+    <div class="play">
+      <p><a href="/">Play Again?</a></p>
+    </div>
 $else:
-    <p>
-      <form action="/game" method="POST">
-        - <input type="text" name="action"> <input type="SUBMIT">
-      </form>
-    </p>
+    <div class="button">
+      <p>
+        <form action="/game" method="POST">
+          <div class="sub">
+            <input type="text" name="action">
+            <input type="image" src=static/Submit-Button.png alt="Submit" width=80em height=30em>
+          </div>
+        </form>
+      </p>
+    </div>

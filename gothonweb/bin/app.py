@@ -39,11 +39,16 @@ class GameEngine(object):
     def POST(self):
         form = web.input(action=None)
 
-        # there is a bug here, can you fix it ?
         if session.room and form.action:
             session.room = session.room.go(form.action)
 
-        raise web.seeother("/game")
+        # doesn't work with extra tries
+        #if form.action in session.room.paths:
+            #session.room = session.room.go(form.action)
+        #else:
+            #session.room = session.room.go('*')
+
+        web.seeother("/game")
 
 
 if __name__ == "__main__":

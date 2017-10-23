@@ -1,0 +1,38 @@
+body {
+  background-color: LightSlateGray;
+}
+
+h1 {
+  text-align: center;
+  font-family: "Helvetica";
+  color: MidnightBlue;
+  font-size: 50px;
+}
+
+.text {
+  margin: auto;
+  width: 65%;
+  font-family: "Helvetica";
+  color: MidnightBlue;
+  font-size: 30px;
+}
+
+.play {
+  font-family: "Helvetica";
+  font-size: 30px;
+  margin: auto;
+  width: 50%;
+}
+
+.button {
+  font-family: "Helvetica";
+  margin: auto;
+  width: 20%;
+  border: 3px solid MidnightBlue;
+  background-color: DarkRed;
+  padding: 10px;
+}
+
+.sub {
+  height: 3em;
+}
